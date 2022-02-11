@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 
-//
+// On permet l'enregistrement des utilisateurs
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
@@ -13,24 +13,28 @@ exports.signup = (req, res, next) => {
             password: hash
         });
         user.save()
+        // Un message s'affiche si enregistrement réussie
             .then(() => res.status(201).json({message: 'Utilisateur créé !'}))
             .catch(error => res.status(400).json({error}));
     
     })
     .catch(error => res.status(500).json({error}));
 };
-//
+// Connexion de l'utilisateur
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
       .then(user => {
         if (!user) {
+        // Un message d'erreur s'affiche si l'utilisateur n'est pas enregistré
           return res.status(401).json({ error: 'Utilisateur non trouvé !' });
         }
         bcrypt.compare(req.body.password, user.password)
           .then(valid => {
             if (!valid) {
+            // Affichage d'un message si le mot de passe n'est pas bon
               return res.status(401).json({ error: 'Mot de passe incorrect !' });
             }
+            // On sécurise avec RANDOM_TOKEN_SECRET
             res.status(200).json({
               userId: user._id,
               token: jwt.sign(

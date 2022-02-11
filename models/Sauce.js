@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+// shéma pour la création des sauces
 const sauceSchema = mongoose.Schema({
     name: {type: String, required: true},
     manufacturer: { type: String, required: true },

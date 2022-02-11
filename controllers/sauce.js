@@ -1,7 +1,8 @@
 
 const Sauce = require("../models/Sauce");
 const fs = require("fs");
-// 
+// Quand on créer une sauce, 
+// On vient récupérer son image, son ID. 
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
   delete sauceObject._id;
@@ -12,11 +13,12 @@ exports.createSauce = (req, res, next) => {
     }`,
   });
   sauce
+  // Si sauvegarde réussie, un message apparaît
     .save()
     .then(() => res.status(201).json({ message: "Objet enregistré !" }))
     .catch((error) => res.status(400).json({ error }));
 };
-//
+// 
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({
     _id: req.params.id,
@@ -30,7 +32,8 @@ exports.getOneSauce = (req, res, next) => {
       });
     });
 };
-//
+// Fonction qui permet de modifier 
+// Une sauce déjà créée par l'utilisateur
 exports.modifySauce = (req, res, next) => {
   const sauceObject = req.file
     ? {
@@ -44,10 +47,11 @@ exports.modifySauce = (req, res, next) => {
     { _id: req.params.id },
     { ...sauceObject, _id: req.params.id }
   )
+  // On affiche un message si modification réussie
     .then(() => res.status(200).json({ message: "Objet modifié !" }))
     .catch((error) => res.status(400).json({ error }));
 };
-// 
+// On vient supprimer une sauce déjà créée
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
@@ -60,7 +64,7 @@ exports.deleteSauce = (req, res, next) => {
     })
     .catch((error) => res.status(500).json({ error }));
 };
-//
+// On affiche toutes les sauces sur la page
 exports.getAllSauces = (req, res, next) => {
   Sauce.find()
     .then((sauces) => {

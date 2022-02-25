@@ -76,6 +76,7 @@ exports.getAllSauces = (req, res, next) => {
       });
     });
 };
+// On met en place les likes dislikes
 exports.likeDislikeSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
   .then ( sauce => {

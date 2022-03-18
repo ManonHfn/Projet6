@@ -1,12 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 const mongoose = require('mongoose');
 const path = require('path')
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
-
-
 
 
 // On connect MongoDB
@@ -20,7 +19,8 @@ mongoose.connect('mongodb+srv://Manonhfn:TaylorLautner04@cluster0.jgevr.mongodb.
   
   const app = express();
   
-
+app.use(helmet())
+app.disable('x-powered-by');
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
